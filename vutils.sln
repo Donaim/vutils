@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vutils", "vutils\vutils.csproj", "{4300FBBA-FA61-4D0B-9D13-C63D520DC657}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{8F774E43-B678-4B85-8428-B2C9313E3FD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProvider", "UnitTestProvider\UnitTestProvider.csproj", "{A47A31E7-B947-485A-8844-C6B28C6DB547}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4300FBBA-FA61-4D0B-9D13-C63D520DC657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4300FBBA-FA61-4D0B-9D13-C63D520DC657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4300FBBA-FA61-4D0B-9D13-C63D520DC657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4300FBBA-FA61-4D0B-9D13-C63D520DC657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F774E43-B678-4B85-8428-B2C9313E3FD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F774E43-B678-4B85-8428-B2C9313E3FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F774E43-B678-4B85-8428-B2C9313E3FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F774E43-B678-4B85-8428-B2C9313E3FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A47A31E7-B947-485A-8844-C6B28C6DB547}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A47A31E7-B947-485A-8844-C6B28C6DB547}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A47A31E7-B947-485A-8844-C6B28C6DB547}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A47A31E7-B947-485A-8844-C6B28C6DB547}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65E87226-0161-468B-A911-A9D3158B576C}
+	EndGlobalSection
+EndGlobal
