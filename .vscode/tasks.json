@@ -15,11 +15,23 @@
             ],
             "group": "build",
             "presentation": {
-                // Reveal the output only if unrecognized errors occur.
                 "reveal": "always",
                 "focus": true
             },
-            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "runTest",
+            "type": "shell",
+            "command": "mono",
+            "args": [
+                "${workspaceFolder}/Testing/bin/Debug/Testing.exe"        
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "focus": true
+            },
             "problemMatcher": "$msCompile"
         }
     ]

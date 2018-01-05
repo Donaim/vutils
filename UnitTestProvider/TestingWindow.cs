@@ -80,7 +80,7 @@ namespace vutils.Testing
         }
 
         public readonly OutBox OutB;
-        public class OutBox : RichTextBox
+        public class OutBox : Control
         {
             readonly TestingWindow window;
             public const int XOFFSET = 5;
@@ -88,14 +88,14 @@ namespace vutils.Testing
             {
                 window = w;
 
-                BorderStyle = BorderStyle.None;
+                // BorderStyle = BorderStyle.None;
                 BackColor = Color.Black;
                 ForeColor = Color.Red;
                 Size = new Size(window.ClientRectangle.Width - XOFFSET, window.ClientRectangle.Height - 3/* - window.InB.Height*/);
                 Location = new Point(XOFFSET, 0);
                 Font = FONT;
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
-                ReadOnly = true;
+                // ReadOnly = true;
 
                 KeyDown += OutBox_KeyDown;
                 KeyPress += OutBox_KeyPress;
@@ -118,54 +118,59 @@ namespace vutils.Testing
 
                 return queue.Dequeue();
             }
+
+            new string Text = "";
+            int TextLength => Text.Length;
+            void AppendText(string s) { Text += s; }
+            public string Rtf { get => Text; set => Text = value; }
+
             string getBuffer() => Text.Substring(lastLen).Replace("\n", "").Replace("\r", "");
 
-            [DllImport("user32.dll", EntryPoint = "LockWindowUpdate", SetLastError = true, CharSet = CharSet.Auto)]
-            private static extern IntPtr LockWindow(IntPtr Handle);
+            static IntPtr LockWindow(IntPtr Handle) { return IntPtr.Zero; } //on Linux
 
             private void OutBox_KeyDown(object sender, KeyEventArgs e)
             {
-                switch (e.KeyCode)
-                {
-                    case Keys.V:
-                        if (e.Control && SelectionStart >= lastLen)
-                        {
-                            //Select(SelectionStart - 1, SelectionLength + 1);
-                            SelectedText = Clipboard.GetText();
-                            //lastLen = lastLen - (lastLen - TextLength);
-                        }
-                        break;
-                    case Keys.C:
-                        if (e.Control && !string.IsNullOrEmpty(SelectedText))
-                        {
-                            Clipboard.SetText(SelectedText);
-                        }
-                        break;
-                    case Keys.Back:
-                        if(SelectionLength == 0) { break; }
-                        skip = true;
-                        goto case Keys.Delete;
-                    case Keys.Delete:
-                        removeSelectedText();
-                        break;
-                    case Keys.X:
-                        if (e.Control) { removeSelectedText(); }
-                        break;
-                }
+                // switch (e.KeyCode)
+                // {
+                //     case Keys.V:
+                //         if (e.Control && SelectionStart >= lastLen)
+                //         {
+                //             //Select(SelectionStart - 1, SelectionLength + 1);
+                //             SelectedText = Clipboard.GetText();
+                //             //lastLen = lastLen - (lastLen - TextLength);
+                //         }
+                //         break;
+                //     case Keys.C:
+                //         if (e.Control && !string.IsNullOrEmpty(SelectedText))
+                //         {
+                //             Clipboard.SetText(SelectedText);
+                //         }
+                //         break;
+                //     case Keys.Back:
+                //         if(SelectionLength == 0) { break; }
+                //         skip = true;
+                //         goto case Keys.Delete;
+                //     case Keys.Delete:
+                //         removeSelectedText();
+                //         break;
+                //     case Keys.X:
+                //         if (e.Control) { removeSelectedText(); }
+                //         break;
+                // }
             }
             void removeSelectedText()
             {
-                if (SelectionLength > 0 && SelectionStart >= lastLen)
-                {
-                    LockWindow(this.Handle);
+                // if (SelectionLength > 0 && SelectionStart >= lastLen)
+                // {
+                //     LockWindow(this.Handle);
 
-                    SelectedText = "?";
-                    var selStart = SelectionStart - 1;
-                    Text = Text.Remove(SelectionStart - 1, 1);
-                    SelectionStart = selStart;
+                //     SelectedText = "?";
+                //     var selStart = SelectionStart - 1;
+                //     Text = Text.Remove(SelectionStart - 1, 1);
+                //     SelectionStart = selStart;
 
-                    LockWindow(IntPtr.Zero);
-                }
+                //     LockWindow(IntPtr.Zero);
+                // }
             }
 
             bool skip = false;
@@ -178,48 +183,48 @@ namespace vutils.Testing
             {
                 if (skip) { skip = false; return; }
 
-                if (e.KeyChar != '\b')
-                {
-                    if(SelectionStart == TextLength)
-                    {
-                        AppendText(e.KeyChar.ToString());
-                    }
-                    else if(SelectionStart >= lastLen)
-                    {
-                        LockWindow(this.Handle);
+                // if (e.KeyChar != '\b')
+                // {
+                //     if(SelectionStart == TextLength)
+                //     {
+                //         AppendText(e.KeyChar.ToString());
+                //     }
+                //     else if(SelectionStart >= lastLen)
+                //     {
+                //         LockWindow(this.Handle);
 
-                        var startSel = SelectionStart;
-                        SelectedText = e.KeyChar.ToString();
-                        SelectionStart = startSel + 1;
+                //         var startSel = SelectionStart;
+                //         SelectedText = e.KeyChar.ToString();
+                //         SelectionStart = startSel + 1;
 
-                        LockWindow(IntPtr.Zero);
-                    }
-                }
-                else
-                {
-                    if(TextLength > lastLen)
-                    {
-                        if(SelectionStart == TextLength)
-                        {
-                            LockWindow(this.Handle);
+                //         LockWindow(IntPtr.Zero);
+                //     }
+                // }
+                // else
+                // {
+                //     if(TextLength > lastLen)
+                //     {
+                //         if(SelectionStart == TextLength)
+                //         {
+                //             LockWindow(this.Handle);
 
-                            Text = Text.Remove(TextLength - 1);
-                            SelectionStart = TextLength;
+                //             Text = Text.Remove(TextLength - 1);
+                //             SelectionStart = TextLength;
 
-                            LockWindow(IntPtr.Zero);
-                        }
-                        else if(SelectionStart > lastLen)
-                        {
-                            LockWindow(this.Handle);
+                //             LockWindow(IntPtr.Zero);
+                //         }
+                //         else if(SelectionStart > lastLen)
+                //         {
+                //             LockWindow(this.Handle);
 
-                            var startSel = SelectionStart;
-                            Text = Text.Remove(SelectionStart - 1, 1);
-                            SelectionStart = startSel - 1;
+                //             var startSel = SelectionStart;
+                //             Text = Text.Remove(SelectionStart - 1, 1);
+                //             SelectionStart = startSel - 1;
 
-                            LockWindow(IntPtr.Zero);
-                        }
-                    }
-                }
+                //             LockWindow(IntPtr.Zero);
+                //         }
+                //     }
+                // }
             }
 
             int lastLen = 3;
