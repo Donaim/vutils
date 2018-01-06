@@ -9,7 +9,9 @@ using System.IO;
 
 using System.Windows.Forms;
 using System.Drawing;
-using System.Runtime.InteropServices;
+// using System.Runtime.InteropServices;
+
+// using vconsole;
 
 namespace vutils.Testing
 {
@@ -80,10 +82,9 @@ namespace vutils.Testing
         }
 
         public readonly OutBox OutB;
-        public class OutBox : Control
+        public class OutBox : vtextbox
         {
             readonly TestingWindow window;
-            public const int XOFFSET = 5;
             public OutBox(TestingWindow w)
             {
                 window = w;
@@ -91,8 +92,8 @@ namespace vutils.Testing
                 // BorderStyle = BorderStyle.None;
                 BackColor = Color.Black;
                 ForeColor = Color.Red;
-                Size = new Size(window.ClientRectangle.Width - XOFFSET, window.ClientRectangle.Height - 3/* - window.InB.Height*/);
-                Location = new Point(XOFFSET, 0);
+                Size = new Size(window.ClientRectangle.Width - 0, window.ClientRectangle.Height/* - window.InB.Height*/);
+                Location = new Point(0, 0);
                 Font = FONT;
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
                 // ReadOnly = true;
@@ -119,14 +120,9 @@ namespace vutils.Testing
                 return queue.Dequeue();
             }
 
-            new string Text = "";
-            int TextLength => Text.Length;
-            void AppendText(string s) { Text += s; }
             public string Rtf { get => Text; set => Text = value; }
 
-            string getBuffer() => Text.Substring(lastLen).Replace("\n", "").Replace("\r", "");
-
-            static IntPtr LockWindow(IntPtr Handle) { return IntPtr.Zero; } //on Linux
+            string getBuffer() => lh.Current.Text;
 
             private void OutBox_KeyDown(object sender, KeyEventArgs e)
             {
@@ -227,16 +223,30 @@ namespace vutils.Testing
                 // }
             }
 
-            int lastLen = 3;
+            protected override void BeforeKeyDown(PreviewKeyDownEventArgs e, ref bool skipPress, ref bool skipNavigate, ref bool skipKeyDown) {
+               
+                if(lh.Current != lh.list.Last()) 
+                {
+                    skipNavigate = false;
+                    skipPress = true;
+                    skipKeyDown = true;
+                }
+                else 
+                {
+                    switch (e.KeyCode)
+                    {
+                        case Keys.Enter:
+                            queue.Enqueue(getBuffer());
+                            resetInput();
+                            break;
+                    }
+
+                    Refresh();
+                }
+            }
             private void OutBox_KeyUp(object sender, KeyEventArgs e)
             {
-                switch (e.KeyCode)
-                {
-                    case Keys.Enter:
-                        queue.Enqueue(getBuffer());
-                        resetInput();
-                        break;
-                }
+               
             }
             public void EndRead(bool _resetInput)
             {
@@ -245,13 +255,13 @@ namespace vutils.Testing
             }
             void resetInput()
             {
-                lastLen = Text.Length;
+                AppendText("\n");
+                // lastLen = Text.Length;
             }
 
             public void AppendExtern(object o)
             {
                 AppendText(o.ToString());
-                lastLen = TextLength;
             }
             public static readonly Font FONT = new Font("Consolas", 12);
         }
