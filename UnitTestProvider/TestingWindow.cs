@@ -98,10 +98,6 @@ namespace vutils.Testing
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
                 // ReadOnly = true;
 
-                KeyDown += OutBox_KeyDown;
-                KeyPress += OutBox_KeyPress;
-                KeyUp += OutBox_KeyUp;
-
                 window.Controls.Add(this);
             }
             
@@ -122,131 +118,33 @@ namespace vutils.Testing
 
             public string Rtf { get => Text; set => Text = value; }
 
-            string getBuffer() => lh.Current.Text;
-
-            private void OutBox_KeyDown(object sender, KeyEventArgs e)
-            {
-                // switch (e.KeyCode)
-                // {
-                //     case Keys.V:
-                //         if (e.Control && SelectionStart >= lastLen)
-                //         {
-                //             //Select(SelectionStart - 1, SelectionLength + 1);
-                //             SelectedText = Clipboard.GetText();
-                //             //lastLen = lastLen - (lastLen - TextLength);
-                //         }
-                //         break;
-                //     case Keys.C:
-                //         if (e.Control && !string.IsNullOrEmpty(SelectedText))
-                //         {
-                //             Clipboard.SetText(SelectedText);
-                //         }
-                //         break;
-                //     case Keys.Back:
-                //         if(SelectionLength == 0) { break; }
-                //         skip = true;
-                //         goto case Keys.Delete;
-                //     case Keys.Delete:
-                //         removeSelectedText();
-                //         break;
-                //     case Keys.X:
-                //         if (e.Control) { removeSelectedText(); }
-                //         break;
-                // }
-            }
-            void removeSelectedText()
-            {
-                // if (SelectionLength > 0 && SelectionStart >= lastLen)
-                // {
-                //     LockWindow(this.Handle);
-
-                //     SelectedText = "?";
-                //     var selStart = SelectionStart - 1;
-                //     Text = Text.Remove(SelectionStart - 1, 1);
-                //     SelectionStart = selStart;
-
-                //     LockWindow(IntPtr.Zero);
-                // }
-            }
-
-            bool skip = false;
-            protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
-            {
-                if (e.Control) { skip = true; }
-                base.OnPreviewKeyDown(e);
-            }
-            private void OutBox_KeyPress(object sender, KeyPressEventArgs e)
-            {
-                if (skip) { skip = false; return; }
-
-                // if (e.KeyChar != '\b')
-                // {
-                //     if(SelectionStart == TextLength)
-                //     {
-                //         AppendText(e.KeyChar.ToString());
-                //     }
-                //     else if(SelectionStart >= lastLen)
-                //     {
-                //         LockWindow(this.Handle);
-
-                //         var startSel = SelectionStart;
-                //         SelectedText = e.KeyChar.ToString();
-                //         SelectionStart = startSel + 1;
-
-                //         LockWindow(IntPtr.Zero);
-                //     }
-                // }
-                // else
-                // {
-                //     if(TextLength > lastLen)
-                //     {
-                //         if(SelectionStart == TextLength)
-                //         {
-                //             LockWindow(this.Handle);
-
-                //             Text = Text.Remove(TextLength - 1);
-                //             SelectionStart = TextLength;
-
-                //             LockWindow(IntPtr.Zero);
-                //         }
-                //         else if(SelectionStart > lastLen)
-                //         {
-                //             LockWindow(this.Handle);
-
-                //             var startSel = SelectionStart;
-                //             Text = Text.Remove(SelectionStart - 1, 1);
-                //             SelectionStart = startSel - 1;
-
-                //             LockWindow(IntPtr.Zero);
-                //         }
-                //     }
-                // }
-            }
+            string getBuffer() => lh.Current.Text.Trim('\n', '\r').Substring(lastindex);
 
             protected override void BeforeKeyDown(PreviewKeyDownEventArgs e, ref bool skipPress, ref bool skipNavigate, ref bool skipKeyDown) {
                
-                if(lh.Current != lh.list.Last()) 
+                if(lh.Current != lh.list.Last() || lh.Current.CursorIndex < lastindex) 
                 {
                     skipNavigate = false;
                     skipPress = true;
                     skipKeyDown = true;
                 }
-                else 
+                else
                 {
                     switch (e.KeyCode)
                     {
+                        case Keys.Back:
+                            if(lh.Current.CursorIndex <= lastindex) {
+                                skipNavigate = true;
+                                skipPress = true;
+                                skipKeyDown = true;
+                            } 
+                            break;
                         case Keys.Enter:
                             queue.Enqueue(getBuffer());
                             resetInput();
                             break;
                     }
-
-                    Refresh();
                 }
-            }
-            private void OutBox_KeyUp(object sender, KeyEventArgs e)
-            {
-               
             }
             public void EndRead(bool _resetInput)
             {
@@ -259,9 +157,11 @@ namespace vutils.Testing
                 // lastLen = Text.Length;
             }
 
+            int lastindex = 0;
             public void AppendExtern(object o)
             {
                 AppendText(o.ToString());
+                int lastindex = lh.list.Last().Length;
             }
             public static readonly Font FONT = new Font("Consolas", 12);
         }
