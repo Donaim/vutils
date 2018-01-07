@@ -41,10 +41,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="OxyPlot">
-      <HintPath>..\..\..\Classes\OxyPlot\Source\OxyPlot\bin\Release\netstandard1.0\OxyPlot.dll</HintPath>
+      <HintPath>..\ref\OxyPlot.dll</HintPath>
     </Reference>
     <Reference Include="OxyPlot.WindowsForms">
-      <HintPath>..\..\..\Classes\OxyPlot\Source\OxyPlot.WindowsForms\bin\Release\OxyPlot.WindowsForms.dll</HintPath>
+      <HintPath>..\ref\OxyPlot.WindowsForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
