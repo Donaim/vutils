@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+// using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using vutils.Plotting;
 using vutils.Statistics;
 using OxyPlot.Series;
+// using UnitTestProvider;
+using vutils.Testing;
 
 namespace Testing
 {
-    [TestClass]
+    // [TestClass]
     class PlottingTest
     {
-        [TestMethod]
+        [TestingObjectAttribute]
         static void createSinGraph()
         {
             var s = new FunctionSeries((x) => Math.Sin(x), 0, 10, 0.1);
@@ -40,13 +42,13 @@ namespace Testing
             }
         }
 
-        [TestMethod]
+        [TestingObjectAttribute]
         static void printHistogram()
         {
             var randVector = RNG.DoubleDist(1000);
             Histogram.PrintHist(randVector);
         }
-        [TestMethod]
+        [TestingObjectAttribute]
         static void histogramVSkmean()
         {
             int n = 1000;
@@ -62,7 +64,7 @@ namespace Testing
             Histogram.PrintHist(randVector);
         }
 
-        [TestMethod]
+        [TestingObjectAttribute]
         static void plotCreatorTest()
         {
             new FuncPlotC(Math.Sin, -2, 2) { WinWidth = 1000, Title = "Sin" }.ShowAsync();

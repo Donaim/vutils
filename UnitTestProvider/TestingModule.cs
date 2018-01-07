@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+// using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 
 namespace vutils.Testing
@@ -61,8 +61,7 @@ namespace vutils.Testing
             {
                 foreach(var m in t.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
                 {
-                    if(m.GetCustomAttribute<TestMethodAttribute>() != null 
-                        || m.GetCustomAttribute<TestingObjectAttribute>() != null)
+                    if(m.GetCustomAttribute<TestingObjectAttribute>() != null)
                     {
                         var parent = m.IsStatic ? null : t;
                         yield return new TestMethodExt(m, parent, w);

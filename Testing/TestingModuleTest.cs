@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+// using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using vutils.Testing;
 
 namespace Testing
 {
-    [TestClass]
+    // [TestClass]
     public class TestingModuleTest : vutils.Testing.IAsyncTesting
     {
-        [TestMethod]
-        public void TestMethod1()
+        [TestingObjectAttribute]
+        public void TestingObjectAttribute1()
         {
         }
 
-        [TestMethod] 
+        [TestingObjectAttribute] 
         static void LUL(string alo, string hello = "hi", int n = 2)
         {
 

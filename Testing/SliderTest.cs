@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+// using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Windows.Forms;
 
 using vutils;
+using vutils.Testing;
 using vutils.Plotting;
 using vutils.Statistics;
 using OxyPlot.Series;
 
 namespace Testing
 {
-    [TestClass]
+    // [TestClass]
     public class SliderTest
     {
-        [TestMethod]
+        [TestingObjectAttribute]
         static void basicSliderTest()
         {
             var slider = VSlider.RunAsync();
@@ -33,7 +34,7 @@ namespace Testing
             }
         }
 
-        [TestMethod]
+        [TestingObjectAttribute]
         static void sliderWithGraphTest()
         {
             double a = 1, b = 0;

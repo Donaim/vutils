@@ -4,11 +4,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "buildRelease",
             "type": "shell",
             "command": "msbuild",
             "args": [
                 "${workspaceFolder}/vutils.sln",
+                "/property:Configuration=Release",
                 "/property:GenerateFullPaths=true",
                 "/t:build",
                 "/verbosity:minimal"            
@@ -21,11 +22,11 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "runTest",
+            "label": "runRelease",
             "type": "shell",
             "command": "mono",
             "args": [
-                "${workspaceFolder}/Testing/bin/Debug/Testing.exe"        
+                "${workspaceFolder}/Testing/bin/Release/Testing.exe"        
             ],
             "group": "build",
             "presentation": {
