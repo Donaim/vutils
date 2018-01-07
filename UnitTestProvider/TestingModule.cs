@@ -35,6 +35,7 @@ namespace vutils.Testing
             {
                 w.WriteLine($"{i + 1}: {methods[i].Name}");
             }
+            w.Write(">");
             var answ = w.ReadLine();
             if(int.TryParse(answ, out var ch) && ch <= methods.Length && ch > 0)
             {

@@ -44,7 +44,7 @@ namespace vutils.Testing
 
             BackColor = Color.Black;
             Text = nameof(TestingWindow);
-            
+
             OutB = new OutBox(this);
 
             if (terminateOnExit)
@@ -100,7 +100,7 @@ namespace vutils.Testing
 
                 window.Controls.Add(this);
             }
-            
+
             readonly Queue<string> queue = new Queue<string>();
             int forceEndTime = -1;
             public string ReadLine()
@@ -118,11 +118,10 @@ namespace vutils.Testing
 
             public string Rtf { get => Text; set => Text = value; }
 
-            string getBuffer() => lh.Current.Text.Trim('\n', '\r').Substring(lastindex);
+            string getBuffer() => lh.Current.Text.Trim('\n', '\r').Substring(LastIndex);
 
             protected override void BeforeKeyDown(PreviewKeyDownEventArgs e, ref bool skipPress, ref bool skipNavigate, ref bool skipKeyDown) {
-               
-                if(lh.Current != lh.list.Last() || lh.Current.CursorIndex < lastindex) 
+                if(lh.Current != lh.list.Last() || lh.Current.CursorIndex < LastIndex)
                 {
                     skipNavigate = false;
                     skipPress = true;
@@ -133,11 +132,11 @@ namespace vutils.Testing
                     switch (e.KeyCode)
                     {
                         case Keys.Back:
-                            if(lh.Current.CursorIndex <= lastindex) {
+                            if(lh.Current.CursorIndex <= LastIndex) {
                                 skipNavigate = true;
                                 skipPress = true;
                                 skipKeyDown = true;
-                            } 
+                            }
                             break;
                         case Keys.Enter:
                             queue.Enqueue(getBuffer());
@@ -157,11 +156,22 @@ namespace vutils.Testing
                 // lastLen = Text.Length;
             }
 
-            int lastindex = 0;
+            int lastI = 0;
+            public int LastIndex {
+                get => lastI;
+                protected set {
+                    // Console.WriteLine($"{++counter}# Last index = {value} | lastLine = {lh.list.Last().Text}");
+                    lastI = value;
+                }
+            }
+            // int lastindex = 0;
+            static int counter = 0;
             public void AppendExtern(object o)
             {
                 AppendText(o.ToString());
-                int lastindex = lh.list.Last().Length;
+                LastIndex = lh.list.Last().Text.Length;
+
+                // Console.WriteLine($"{++counter}# Last index = {lastindex}");
             }
             public static readonly Font FONT = new Font("Consolas", 12);
         }
