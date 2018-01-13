@@ -35,9 +35,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="vconsole, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="vtextbox, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ref\vconsole.dll</HintPath>
+      <HintPath>..\ref\vtextbox.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
